@@ -1,4 +1,4 @@
-import { Column, CreateDateColumn, Entity } from 'typeorm';
+import { Column, CreateDateColumn, Entity, PrimaryColumn } from 'typeorm';
 
 @Entity()
 export class SessionsEntity {
@@ -8,7 +8,7 @@ export class SessionsEntity {
   })
   userId: string;
 
-  @Column({
+  @PrimaryColumn({
     type: 'text',
     unique: true
   })
