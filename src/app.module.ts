@@ -3,6 +3,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './modules/auth/auth.module';
+import { UserModule } from './modules/user/user.module';
 import * as ormConnection from "./ormconfig";
 
 @Module({
@@ -10,7 +11,8 @@ import * as ormConnection from "./ormconfig";
     TypeOrmModule.forRootAsync({
       useFactory: () => (ormConnection),
     }),
-    AuthModule
+    AuthModule,
+    UserModule
   ],
   controllers: [AppController],
   providers: [AppService],
