@@ -2,7 +2,7 @@ import { BeforeInsert, Column, Entity, PrimaryGeneratedColumn, CreateDateColumn,
 import * as argon2 from 'argon2';
 
 @Entity()
-export class UsersEntity {
+export class UserEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -20,7 +20,7 @@ export class UsersEntity {
 
   @Column({
     type: 'text',
-    unique: true
+    nullable: true
   })
   username: string;
 
@@ -29,29 +29,30 @@ export class UsersEntity {
 
   @Column({
     type: 'text',
-    unique: true
+    nullable: true
   })
-  facebookId: string;
+  facebook_id: string;
 
   @Column({
     type: 'text',
-    unique: true
+    nullable: true
   })
-  instagramId: string;
+  instagram_id: string;
 
   @Column({
     type: 'text',
-    unique: true
+    nullable: true
   })
-  vkId: string;
+  vk_id: string;
+
+  // @Column({
+  //   type: 'boolean'
+  // })
+  // checkbox: boolean;
 
   @Column({
-    type: 'boolean'
-  })
-  checkBox: boolean;
-
-  @Column({
-    type: 'boolean'
+    type: 'boolean',
+    nullable: true
   })
   verified: boolean;
 
@@ -65,7 +66,7 @@ export class UsersEntity {
   }
 
   toResponseObject() {
-    const { id, created, username } = this;
-    return { id, created, username };
+    const { id, created } = this;
+    return { id, created };
   }
 }

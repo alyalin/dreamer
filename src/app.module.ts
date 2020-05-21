@@ -5,11 +5,15 @@ import { AppService } from './app.service';
 import { AuthModule } from './modules/auth/auth.module';
 import { UserModule } from './modules/user/user.module';
 import * as ormConnection from "./ormconfig";
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
     TypeOrmModule.forRootAsync({
       useFactory: () => (ormConnection),
+    }),
+    ConfigModule.forRoot({
+      isGlobal: true
     }),
     AuthModule,
     UserModule
