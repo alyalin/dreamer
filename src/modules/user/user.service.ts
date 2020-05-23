@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import * as argon2 from 'argon2';
 import { UserEntity } from './entities/user.entity';
 import { UserEmailPasswordDTO } from '../auth/dto/signup.dto';
 
@@ -15,6 +16,14 @@ export class UserService {
   async findByEmail(email: string) {
     try {
       return await this.userRepository.findOne({ where: { email } });
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  async comparePasswords(password: string, hash: string) {
+    try {
+      return argon2.verify(hash, password);
     } catch (e) {
       throw e;
     }
