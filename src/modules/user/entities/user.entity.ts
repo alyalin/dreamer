@@ -56,6 +56,12 @@ export class UserEntity {
   })
   verified: boolean;
 
+  @Column({
+    type: 'text',
+    nullable: true
+  })
+  role: string;
+
   @BeforeInsert()
   async hashPassword() {
     try {
