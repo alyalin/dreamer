@@ -1,5 +1,7 @@
 import { BeforeInsert, Column, Entity, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 import * as argon2 from 'argon2';
+import { SessionPayload } from '../../auth/interfaces/session-payload.interface';
+import { USER_ROLES } from '../enums/roles.enum';
 
 @Entity()
 export class UserEntity {
@@ -58,7 +60,8 @@ export class UserEntity {
 
   @Column({
     type: 'text',
-    nullable: true
+    nullable: true,
+    default: USER_ROLES.DEFAULT
   })
   role: string;
 
@@ -74,5 +77,10 @@ export class UserEntity {
   toResponseObject() {
     const { id, created } = this;
     return { id, created };
+  }
+
+  toSessionSerializer(): SessionPayload {
+    const { id, role, email, verified } = this;
+    return { id, role, email, verified };
   }
 }
