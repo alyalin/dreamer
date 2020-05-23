@@ -21,6 +21,14 @@ export class UserService {
     }
   }
 
+  async findById(id: string) {
+    try {
+      return await this.userRepository.findOne({ where: { id } })
+    } catch (e) {
+      throw e;
+    }
+  }
+
   async comparePasswords(password: string, hash: string) {
     try {
       return argon2.verify(hash, password);
