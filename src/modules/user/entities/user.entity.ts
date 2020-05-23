@@ -54,13 +54,12 @@ export class UserEntity {
 
   @Column({
     type: 'boolean',
-    nullable: true
+    default: false
   })
   verified: boolean;
 
   @Column({
     type: 'text',
-    nullable: true,
     default: USER_ROLES.DEFAULT
   })
   role: string;
