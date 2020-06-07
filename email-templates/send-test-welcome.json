@@ -1,0 +1,10 @@
+{
+  "Source":"Dreamer <no-reply@justadreamer.ru>",
+  "Template": "WelcomeTemplate6",
+  "ConfigurationSetName": "TestConfig",
+  "Destination": {
+    "ToAddresses": [ "occvlt@yandex.ru"
+    ]
+  },
+  "TemplateData": "{ \"action_url\":\"https://google.com\", \"name\": \"Александр\", \"login_url\": \"https://justadreamer.ru/account/signin\", \"username\": \"occvlt@yandex.ru\", \"support_email\": \"support@justadreamer.ru\", \"help_url\": \"https://justadreamer.ru/help\", \"live_chat_url\": \"https://justadreamer.ru/help\" }"
+}
