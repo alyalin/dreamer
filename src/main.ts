@@ -33,7 +33,11 @@ async function bootstrap() {
   );
   app.use(passport.initialize());
   app.use(passport.session());
-  await app.listen(process.env.NEST_PORT);
-  Logger.log(`Server running on http://localhost:${process.env.NEST_PORT}`, 'Bootstrap');
+  app.enableCors({
+    origin: 'http://localhost:3000',
+    credentials: true
+  });
+  await app.listen(4100);
+  Logger.log(`Server running on http://localhost:4100`, 'Bootstrap');
 }
 bootstrap();
