@@ -50,24 +50,48 @@ export class AuthService {
         role: userPayload.role,
       };
 
-      if (userRefreshToken) {
-        // gen new token if is exist
-      } else {
-        const createdToken = await this.refreshTokenService.createRefreshToken(
-          user.id,
-          nanoid(15),
-          new Date(
-            new Date().getTime() +
-            this.configService.get('REFRESH_TOKEN_EXPIRES') * 60 * 1000,
-          ),
-        );
+      return await this.generateJwtAndRefreshTokens(user.id, payload);
 
-        return {
-          access_token: this.jwtService.sign(payload),
-          refresh_token: createdToken.refreshToken,
-        };
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  async generateNewRefreshToken(userId) {
+    try {
+      const user = await this.userService.findById(userId);
+
+      if (!user) {
+        throw new UnauthorizedException();
       }
 
+      const userPayload = user.toResponseObject();
+      const payload = {
+        sub: userPayload.id,
+        role: userPayload.role,
+      }
+
+      return await this.generateJwtAndRefreshTokens(userId, payload);
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  async generateJwtAndRefreshTokens(userId, jwtPayload) {
+    try {
+      const createdToken = await this.refreshTokenService.createRefreshToken(
+        userId,
+        nanoid(15),
+        new Date(
+          new Date().getTime() +
+          this.configService.get('REFRESH_TOKEN_EXPIRES') * 1000,
+        ),
+      );
+
+      return {
+        access_token: this.jwtService.sign(jwtPayload),
+        refresh_token: createdToken.refreshToken,
+      };
     } catch (e) {
       throw e;
     }

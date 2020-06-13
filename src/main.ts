@@ -3,6 +3,7 @@ import { AppModule } from './app.module';
 import { Logger, ValidationPipe } from '@nestjs/common';
 import * as passport from 'passport';
 import { config } from 'dotenv';
+import cookieParser = require('cookie-parser')
 
 config();
 
@@ -11,6 +12,7 @@ async function bootstrap() {
   app.setGlobalPrefix('v1');
   app.useGlobalPipes(new ValidationPipe());
   app.use(passport.initialize());
+  app.use(cookieParser())
   app.enableCors({
     origin: process.env.CORS_URL,
     credentials: true
