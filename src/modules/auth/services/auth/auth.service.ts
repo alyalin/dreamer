@@ -34,11 +34,14 @@ export class AuthService {
   async login(data: UserEmailPasswordDTO) {
     try {
       const user = await this.userService.findByEmail(data.email);
+      if (!user) {
+        throw new UnauthorizedException();
+      }
       const isPasswordValid = await this.userService.comparePasswords(
         data.password,
         user.password,
       );
-      if (!user || !isPasswordValid) {
+      if (!isPasswordValid) {
         throw new UnauthorizedException();
       }
       const userRefreshToken = await this.refreshTokenService.findByUserId(
@@ -57,7 +60,7 @@ export class AuthService {
     }
   }
 
-  async generateNewRefreshToken(userId) {
+  async generateNewJwtToken(userId) {
     try {
       const user = await this.userService.findById(userId);
 
@@ -71,7 +74,9 @@ export class AuthService {
         role: userPayload.role,
       }
 
-      return await this.generateJwtAndRefreshTokens(userId, payload);
+      return {
+        access_token: this.jwtService.sign(payload)
+      };
     } catch (e) {
       throw e;
     }

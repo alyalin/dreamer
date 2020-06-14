@@ -1,4 +1,15 @@
-import { Body, Controller, Get, Post, Req, Res, Session, UnauthorizedException, UseGuards } from '@nestjs/common'
+import {
+  BadRequestException,
+  Body,
+  Controller,
+  Get,
+  Post,
+  Req,
+  Res,
+  Session,
+  UnauthorizedException,
+  UseGuards,
+} from '@nestjs/common'
 import { AuthService } from './services/auth/auth.service';
 import { UserEmailPasswordDTO } from './dto/signup.dto';
 import { Response, Request } from 'express';
@@ -31,18 +42,26 @@ export class AuthController {
     }
   }
 
-  @UseGuards(AuthGuard('jwt'))
-  @Get('/refreshToken')
-  async refreshToken(@User('userId') userId, @Res() res: Response, @Req() req: Request) {
-    if (( await this.refreshTokenService.validateRefreshToken(userId, req.cookies.refresh_token) )) {
-      const tokens = await this.authService.generateNewRefreshToken(userId);
-      res.cookie('refresh_token', tokens.refresh_token, {
-        maxAge: this.configService.get('REFRESH_TOKEN_EXPIRES') * 1000,
+  @Post('/refresh-token')
+  async refreshToken(@Res() res: Response, @Req() req: Request) {
+    if (!req.cookies.refresh_token) {
+      throw new BadRequestException();
+    }
+    const validToken = await this.refreshTokenService.validateRefreshToken(req.cookies.refresh_token);
+
+    if (!validToken) {
+      throw new BadRequestException();
+    }
+
+    if (validToken.valid) {
+      const jwtToken = await this.authService.generateNewJwtToken(validToken.token.userId);
+      res.cookie('refresh_token', validToken.token.refreshToken, {
+        maxAge: validToken.token.expiresAt * 1000,
         httpOnly: true,
         secure: this.configService.get('NODE_ENV') === 'production'
       })
       res.send({
-        access_token: tokens.access_token
+        access_token: jwtToken.access_token
       });
     } else {
       res.cookie('refresh_token', "", {
@@ -51,6 +70,18 @@ export class AuthController {
       });
       throw new UnauthorizedException();
     }
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Get('/logout')
+  async logout(@Res() res: Response, @Req() req: Request) {
+    console.log(req.cookies);
+    await this.refreshTokenService.invalidateRefreshToken(req.cookies.refresh_token);
+    res.cookie('refresh_token', "", {
+      httpOnly: true,
+      expires: new Date(0)
+    });
+    res.send({ success: true })
   }
 
   @UseGuards(AuthGuard('jwt'))

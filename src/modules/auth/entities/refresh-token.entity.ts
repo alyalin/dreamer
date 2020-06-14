@@ -30,7 +30,7 @@ export class RefreshTokenEntity {
   }
 
   toResponseObject() {
-    const { refreshToken, expiresAt  } = this;
-    return { refreshToken, expiresAt };
+    const { refreshToken, expiresAt, userId  } = this;
+    return { refreshToken, expiresAt, userId };
   }
 }
