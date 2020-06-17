@@ -14,7 +14,7 @@ async function bootstrap() {
         ? ['log', 'debug', 'error', 'verbose', 'warn']
         : ['log', 'debug', 'error', 'verbose', 'warn'],
   });
-  app.setGlobalPrefix('v1');
+  app.setGlobalPrefix('api/v1');
   app.useGlobalPipes(new ValidationPipe());
   app.use(passport.initialize());
   app.use(cookieParser());
