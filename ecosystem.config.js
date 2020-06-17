@@ -20,7 +20,7 @@ module.exports = {
       path: '/var/app/repositories/',
       'pre-deploy-local': '',
       'post-deploy':
-        'npm install && pm2 reload ecosystem.config.js',
+        'npm install && npm run build && pm2 reload ecosystem.config.js',
       'pre-setup': '',
     },
   },
