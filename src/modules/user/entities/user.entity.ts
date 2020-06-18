@@ -47,10 +47,11 @@ export class UserEntity {
   })
   vk_id: string;
 
-  // @Column({
-  //   type: 'boolean'
-  // })
-  // checkbox: boolean;
+  @Column({
+    type: 'boolean',
+    default: false
+  })
+  checkbox: boolean;
 
   @Column({
     type: 'boolean',
