@@ -6,29 +6,28 @@ import {
   Post,
   Req,
   Res,
-  Session,
   UnauthorizedException,
   UseGuards,
 } from '@nestjs/common'
 import { AuthService } from './services/auth/auth.service';
-import { UserEmailPasswordDTO } from './dto/signup.dto';
+import { SignUpDto } from './dto/sign-up.dto'
 import { Response, Request } from 'express';
 import { ConfigService } from '@nestjs/config'
 import { AuthGuard } from '@nestjs/passport'
-import { User } from '../../common/decorators/user.decorator'
 import { RefreshTokenService } from './services/refresh-token/refresh-token.service'
+import { SignInDto } from './dto/sign-in.dto'
 
 @Controller('auth')
 export class AuthController {
   constructor(private authService: AuthService, private configService: ConfigService, private refreshTokenService: RefreshTokenService) {}
 
   @Post('/signup')
-  async signUp(@Body() data: UserEmailPasswordDTO) {
+  async signUp(@Body() data: SignUpDto) {
     return this.authService.register(data);
   }
 
   @Post('/signin')
-  async signIn(@Body() data: UserEmailPasswordDTO, @Res() res: Response) {
+  async signIn(@Body() data: SignInDto, @Res() res: Response) {
     try {
       const tokens = await this.authService.login(data);
       res.cookie('refresh_token', tokens.refresh_token, {

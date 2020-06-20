@@ -4,11 +4,12 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { UserService } from '../../../user/user.service';
-import { UserEmailPasswordDTO } from '../../dto/signup.dto';
+import { SignUpDto } from '../../dto/sign-up.dto'
 import { JwtService } from '@nestjs/jwt';
 import { RefreshTokenService } from '../refresh-token/refresh-token.service';
 import { nanoid } from 'nanoid';
 import { ConfigService } from '@nestjs/config';
+import { SignInDto } from '../../dto/sign-in.dto'
 
 @Injectable()
 export class AuthService {
@@ -19,7 +20,7 @@ export class AuthService {
     private configService: ConfigService,
   ) {}
 
-  async register(data: UserEmailPasswordDTO) {
+  async register(data: SignUpDto) {
     try {
       let user = await this.userService.findByEmail(data.email);
       if (user) {
@@ -31,7 +32,7 @@ export class AuthService {
     }
   }
 
-  async login(data: UserEmailPasswordDTO) {
+  async login(data: SignInDto) {
     try {
       const user = await this.userService.findByEmail(data.email);
       if (!user) {
@@ -44,9 +45,9 @@ export class AuthService {
       if (!isPasswordValid) {
         throw new UnauthorizedException();
       }
-      const userRefreshToken = await this.refreshTokenService.findByUserId(
-        user.id,
-      );
+      // const userRefreshToken = await this.refreshTokenService.findByUserId(
+      //   user.id,
+      // );
       const userPayload = user.toResponseObject();
       const payload = {
         sub: userPayload.id,
