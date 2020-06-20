@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import * as argon2 from 'argon2';
 import { UserEntity } from './entities/user.entity';
-import { UserEmailPasswordDTO } from '../auth/dto/signup.dto';
+import { SignUpDto } from '../auth/dto/sign-up.dto'
 
 @Injectable()
 export class UserService {
@@ -37,7 +37,7 @@ export class UserService {
     }
   }
 
-  async createUser(data: UserEmailPasswordDTO) {
+  async createUser(data: SignUpDto) {
     try {
       const newUser = await this.userRepository.create(data);
       await this.userRepository.save(newUser);
