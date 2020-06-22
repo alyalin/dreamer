@@ -16,6 +16,12 @@ async function bootstrap() {
         ? ['log', 'debug', 'error', 'verbose', 'warn']
         : ['log', 'debug', 'error', 'verbose', 'warn'],
   });
+  if (process.env.NODE_ENV === 'development') {
+    app.enableCors({
+      origin: process.env.CORS_URL,
+      credentials: true,
+    });
+  }
   app.use(helmet());
   app.setGlobalPrefix('api/v1');
   app.useGlobalPipes(new ValidationPipe());
@@ -31,12 +37,6 @@ async function bootstrap() {
     }),
   );
 
-  if (process.env.NODE_ENV === 'development') {
-    app.enableCors({
-      origin: process.env.CORS_URL,
-      credentials: true,
-    });
-  }
   await app.listen(process.env.APP_PORT);
   Logger.log(
     `Server running on http://localhost:${process.env.APP_PORT}`,
