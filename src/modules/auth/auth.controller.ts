@@ -90,4 +90,11 @@ export class AuthController {
       message: 'You have access to this method'
     }
   }
+
+  @Get('/csrf-token')
+  async getCSRFToken(@Req() req) {
+    return {
+      token: req.csrfToken()
+    }
+  }
 }
