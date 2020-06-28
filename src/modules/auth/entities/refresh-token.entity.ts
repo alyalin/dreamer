@@ -1,5 +1,4 @@
 import { BeforeInsert, Column, CreateDateColumn, Entity, PrimaryColumn } from 'typeorm'
-import * as argon2 from 'argon2'
 
 @Entity()
 export class RefreshTokenEntity {

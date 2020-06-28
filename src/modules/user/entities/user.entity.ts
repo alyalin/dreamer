@@ -1,39 +1,44 @@
-import { BeforeInsert, Column, Entity, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm';
-import * as argon2 from 'argon2';
-import { SessionPayload } from '../../auth/interfaces/session-payload.interface';
-import { USER_ROLES } from '../enums/roles.enum';
+import { Column, Entity, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm'
+import { SessionPayload } from '../../auth/interfaces/session-payload.interface'
+import { USER_ROLES } from '../enums/roles.enum'
 
 @Entity()
 export class UserEntity {
   @PrimaryGeneratedColumn('uuid')
-  id: string;
+  id: string
 
   @CreateDateColumn()
-  created: Date;
+  created: Date
 
   @UpdateDateColumn()
   updated: Date;
 
   @Column({
     type: 'text',
-    unique: true
+    unique: true,
   })
-  email: string;
+  email: string
 
   @Column({
     type: 'text',
-    nullable: true
+    nullable: true,
   })
-  username: string;
+  username: string
+
+  @Column({
+    type: 'text',
+    nullable: true,
+  })
+  lastname: string
 
   @Column('text')
-  password: string;
+  password: string
 
   @Column({
     type: 'text',
-    nullable: true
+    nullable: true,
   })
-  facebook_id: string;
+  facebook_id: string
 
   @Column({
     type: 'text',
@@ -64,15 +69,6 @@ export class UserEntity {
     default: USER_ROLES.DEFAULT
   })
   role: string;
-
-  @BeforeInsert()
-  async hashPassword() {
-    try {
-      this.password = await argon2.hash(this.password);
-    } catch (e) {
-      throw e;
-    }
-  }
 
   toResponseObject() {
     const { id, role, created, username, email, facebook_id, instagram_id, vk_id, verified  } = this;

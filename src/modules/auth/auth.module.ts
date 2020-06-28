@@ -1,28 +1,27 @@
-import { Module } from '@nestjs/common';
-import { PassportModule } from '@nestjs/passport';
+import { HttpModule, Module } from '@nestjs/common'
+import { PassportModule } from '@nestjs/passport'
 
-import { AuthService } from './services/auth/auth.service';
-import { AuthController } from './auth.controller';
-import { UserModule } from '../user/user.module';
-import { SessionSerializer } from './serializer/session.serializer';
-import { LocalStrategy } from './strategies/local.strategy';
-import { JwtModule } from '@nestjs/jwt';
+import { AuthService } from './services/auth/auth.service'
+import { AuthController } from './auth.controller'
+import { UserModule } from '../user/user.module'
+import { JwtModule } from '@nestjs/jwt'
 import { JwtStrategy } from './strategies/jwt.strategy'
 import { ConfigModule, ConfigService } from '@nestjs/config'
-import { RefreshTokenService } from './services/refresh-token/refresh-token.service';
+import { RefreshTokenService } from './services/refresh-token/refresh-token.service'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { RefreshTokenEntity } from './entities/refresh-token.entity'
 
 @Module({
   imports: [
     UserModule,
+    HttpModule,
     TypeOrmModule.forFeature([RefreshTokenEntity]),
     PassportModule.registerAsync({
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({
-        defaultStrategy: 'jwt'
+        defaultStrategy: 'jwt',
       }),
-      inject: [ConfigService]
+      inject: [ConfigService],
     }),
     JwtModule.registerAsync({
       imports: [ConfigModule],
