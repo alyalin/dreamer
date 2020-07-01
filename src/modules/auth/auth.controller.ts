@@ -2,13 +2,14 @@ import {
   BadRequestException,
   Body,
   Controller,
-  Get, HttpException,
+  Get,
+  HttpException,
   Post,
   Req,
   Res,
   UnauthorizedException,
   UseGuards,
-} from '@nestjs/common'
+} from '@nestjs/common';
 import { AuthService } from './services/auth/auth.service'
 import { SignUpDto } from './dto/sign-up.dto'
 import { Response, Request } from 'express'
@@ -116,7 +117,10 @@ export class AuthController {
   async fbToken(@Body() body: SocialTokenDto, @Res() res: Response) {
     try {
       const user = await this.userService.addFacebookData(body.token)
-      const tokens = await this.authService.generateJwtAndRefreshTokens(user.id, { sub: user.id, role: user.role })
+      const tokens = await this.authService.generateJwtAndRefreshTokens(
+        user.id,
+        { sub: user.id, role: user.role },
+      )
       res.cookie('refresh_token', tokens.refresh_token, {
         maxAge: this.configService.get('REFRESH_TOKEN_EXPIRES') * 1000,
         httpOnly: true,
@@ -126,6 +130,28 @@ export class AuthController {
         access_token: tokens.access_token,
       })
     } catch (e) {
+      throw new HttpException(e.response.statusText, e.response.status)
+    }
+  }
+
+  @Post('/vk/token')
+  async vkTokenHandler(@Body() body: SocialTokenDto, @Res() res: Response) {
+    try {
+      const user = await this.userService.addVkData(body.token)
+      const tokens = await this.authService.generateJwtAndRefreshTokens(
+        user.id,
+        { sub: user.id, role: user.role },
+      )
+      res.cookie('refresh_token', tokens.refresh_token, {
+        maxAge: this.configService.get('REFRESH_TOKEN_EXPIRES') * 1000,
+        httpOnly: true,
+        secure: this.configService.get('NODE_ENV') === 'production',
+      })
+      res.send({
+        access_token: tokens.access_token,
+      })
+    } catch (e) {
+      console.log(e)
       throw new HttpException(e.response.statusText, e.response.status)
     }
   }
