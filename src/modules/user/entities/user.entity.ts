@@ -71,8 +71,8 @@ export class UserEntity {
   role: string;
 
   toResponseObject() {
-    const { id, role, created, username, email, facebook_id, instagram_id, vk_id, verified  } = this;
-    return { id, role, created, username, email, facebook_id, instagram_id, vk_id, verified };
+    const { id, role, created, username, lastname, email, facebook_id, instagram_id, vk_id, verified } = this
+    return { id, role, created, username, lastname, email, facebook_id, instagram_id, vk_id, verified }
   }
 
   toSessionSerializer(): SessionPayload {
