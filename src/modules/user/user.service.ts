@@ -65,11 +65,11 @@ export class UserService {
 
       const user = await this.findByEmail(data.email)
       if (user) {
-        if (!user.username) {
-          user.username = data.first_name
+        if (!user.firstName) {
+          user.firstName = data.first_name
         }
-        if (!user.lastname) {
-          user.lastname = data.last_name
+        if (!user.lastName) {
+          user.lastName = data.last_name
         }
         user.facebook_id = data.id
 
@@ -81,8 +81,8 @@ export class UserService {
       const newUser = this.userRepository.create({
         email: data.email,
         facebook_id: data.id,
-        lastname: data.last_name,
-        username: data.first_name,
+        lastName: data.last_name,
+        firstName: data.first_name,
       })
       await this.userRepository.save(newUser)
       return newUser.toResponseObject()
@@ -109,11 +109,11 @@ export class UserService {
 
       const user = await this.findByEmail(data.email)
       if (user) {
-        if (!user.username) {
-          user.username = userInfo.data.response.first_name
+        if (!user.firstName) {
+          user.firstName = userInfo.data.response.first_name
         }
-        if (!user.lastname) {
-          user.lastname = userInfo.data.response.last_name
+        if (!user.lastName) {
+          user.lastName = userInfo.data.response.last_name
         }
         user.vk_id = data.user_id
 
@@ -125,8 +125,8 @@ export class UserService {
       const newUser = this.userRepository.create({
         email: data.email ? data.email : null,
         vk_id: data.user_id,
-        lastname: userInfo.data.response.last_name,
-        username: userInfo.data.response.first_name,
+        lastName: userInfo.data.response.last_name,
+        firstName: userInfo.data.response.first_name,
       })
       await this.userRepository.save(newUser)
       return newUser.toResponseObject()
