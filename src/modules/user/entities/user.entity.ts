@@ -23,13 +23,13 @@ export class UserEntity {
     type: 'text',
     nullable: true,
   })
-  username: string
+  firstName: string
 
   @Column({
     type: 'text',
     nullable: true,
   })
-  lastname: string
+  lastName: string
 
   @Column('text')
   password: string
@@ -71,12 +71,7 @@ export class UserEntity {
   role: string;
 
   toResponseObject() {
-    const { id, role, created, username, lastname, email, facebook_id, instagram_id, vk_id, verified } = this
-    return { id, role, created, username, lastname, email, facebook_id, instagram_id, vk_id, verified }
-  }
-
-  toSessionSerializer(): SessionPayload {
-    const { id, role, email, verified } = this;
-    return { id, role, email, verified };
+    const { id, role, created, firstName, lastName, email, facebook_id, instagram_id, vk_id, verified } = this
+    return { id, role, created, firstName, lastName, email, facebook_id, instagram_id, vk_id, verified }
   }
 }
