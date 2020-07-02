@@ -87,7 +87,6 @@ export class AuthController {
   @UseGuards(AuthGuard('jwt'))
   @Get('/logout')
   async logout(@Res() res: Response, @Req() req: Request) {
-    console.log(req.cookies)
     await this.refreshTokenService.invalidateRefreshToken(
       req.cookies.refresh_token,
     )
@@ -151,7 +150,6 @@ export class AuthController {
         access_token: tokens.access_token,
       })
     } catch (e) {
-      console.log(e)
       throw new HttpException(e.response.statusText, e.response.status)
     }
   }

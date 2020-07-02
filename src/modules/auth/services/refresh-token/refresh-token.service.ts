@@ -77,7 +77,6 @@ export class RefreshTokenService {
   async invalidateRefreshToken(refreshToken) {
     try {
       const token = await this.refreshTokenRepository.findOne({ where: { refreshToken } });
-      console.log(refreshToken);
       if (!token) {
         throw new NotFoundException();
       }
