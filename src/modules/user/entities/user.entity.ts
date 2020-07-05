@@ -16,6 +16,7 @@ export class UserEntity {
   @Column({
     type: 'text',
     unique: true,
+    nullable: true,
   })
   email: string
 
@@ -31,7 +32,10 @@ export class UserEntity {
   })
   lastName: string
 
-  @Column('text')
+  @Column({
+    type: 'text',
+    nullable: true,
+  })
   password: string
 
   @Column({
