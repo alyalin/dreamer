@@ -4,8 +4,8 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './modules/auth/auth.module';
 import { UserModule } from './modules/user/user.module';
-import * as ormConnection from "./ormconfig";
-import { ConfigModule, ConfigService } from '@nestjs/config'
+import * as ormConnection from './ormconfig'
+import { ConfigModule } from '@nestjs/config'
 import { Connection } from 'typeorm'
 import { UserEntity } from './modules/user/entities/user.entity'
 import { USER_ROLES } from './modules/user/enums/roles.enum'
@@ -42,7 +42,7 @@ export class AppModule {
         await userRepository.save(user);
         Logger.log('Admin user added', 'Bootstrap');
       } else {
-        Logger.log('Admin user already existing', 'Bootstrap');
+        Logger.log('Admin user already exists', 'Bootstrap')
       }
     } catch (e) {
       Logger.warn(e, 'Bootstrap')
