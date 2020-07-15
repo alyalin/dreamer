@@ -1,14 +1,16 @@
 import { Logger, Module } from '@nestjs/common'
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-import { AuthModule } from './modules/auth/auth.module';
-import { UserModule } from './modules/user/user.module';
+import { TypeOrmModule } from '@nestjs/typeorm'
+import { AppController } from './app.controller'
+import { AppService } from './app.service'
+import { AuthModule } from './modules/auth/auth.module'
+import { UserModule } from './modules/user/user.module'
 import * as ormConnection from './ormconfig'
 import { ConfigModule } from '@nestjs/config'
 import { Connection } from 'typeorm'
 import { UserEntity } from './modules/user/entities/user.entity'
 import { USER_ROLES } from './modules/user/enums/roles.enum'
+import { LinksModule } from './modules/links/links.module'
+import { UserService } from './modules/user/user.service'
 
 @Module({
   imports: [
@@ -16,17 +18,18 @@ import { USER_ROLES } from './modules/user/enums/roles.enum'
       useFactory: () => (ormConnection),
     }),
     ConfigModule.forRoot({
-      isGlobal: true
+      isGlobal: true,
     }),
     AuthModule,
-    UserModule
+    UserModule,
+    LinksModule,
   ],
   controllers: [AppController],
   providers: [AppService],
 })
 export class AppModule {
-  constructor(private connection: Connection) {
-    this.addAdminUser();
+  constructor(private connection: Connection, private userService: UserService) {
+    this.addAdminUser()
   }
 
   async addAdminUser() {
@@ -34,13 +37,12 @@ export class AppModule {
       const userRepository = this.connection.getRepository(UserEntity);
       const isExist = await userRepository.findOne({ where: { email: 'master@justadreamer.ru' } });
       if (!isExist) {
-        const user = userRepository.create({
+        await this.userService.createUser({
           email: 'master@justadreamer.ru',
           password: 'TaX6jUfF',
-          role: USER_ROLES.ADMIN
-        });
-        await userRepository.save(user);
-        Logger.log('Admin user added', 'Bootstrap');
+          checkbox: false,
+        }, USER_ROLES.ADMIN)
+        Logger.log('Admin user added', 'Bootstrap')
       } else {
         Logger.log('Admin user already exists', 'Bootstrap')
       }

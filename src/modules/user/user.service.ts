@@ -6,6 +6,7 @@ import * as argon2 from 'argon2'
 import { UserEntity } from './entities/user.entity'
 import { SignUpDto } from '../auth/dto/sign-up.dto'
 import { ConfigService } from '@nestjs/config'
+import { USER_ROLES } from './enums/roles.enum'
 
 @Injectable()
 export class UserService {
@@ -41,7 +42,7 @@ export class UserService {
     }
   }
 
-  async createUser(data: SignUpDto) {
+  async createUser(data: SignUpDto, role?: USER_ROLES) {
     try {
       const newUser = await this.userRepository.create({
         email: data.email,
