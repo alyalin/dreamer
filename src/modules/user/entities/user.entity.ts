@@ -1,6 +1,6 @@
-import { Column, Entity, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm'
-import { SessionPayload } from '../../auth/interfaces/session-payload.interface'
+import { Column, Entity, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, OneToMany } from 'typeorm'
 import { USER_ROLES } from '../enums/roles.enum'
+import { LinksEntity } from '../../links/entities/links.entity'
 
 @Entity()
 export class UserEntity {
@@ -64,15 +64,18 @@ export class UserEntity {
 
   @Column({
     type: 'boolean',
-    default: false
+    default: false,
   })
   verified: boolean;
 
   @Column({
     type: 'text',
-    default: USER_ROLES.DEFAULT
+    default: USER_ROLES.DEFAULT,
   })
-  role: string;
+  role: string
+
+  @OneToMany(type => LinksEntity, links => links.user)
+  links: LinksEntity[]
 
   toResponseObject() {
     const { id, role, created, firstName, lastName, email, facebook_id, instagram_id, vk_id, verified } = this
