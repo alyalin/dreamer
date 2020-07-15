@@ -10,9 +10,11 @@ import { ConfigModule, ConfigService } from '@nestjs/config'
 import { RefreshTokenService } from './services/refresh-token/refresh-token.service'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { RefreshTokenEntity } from './entities/refresh-token.entity'
+import { LinksModule } from '../links/links.module'
 
 @Module({
   imports: [
+    LinksModule,
     UserModule,
     HttpModule,
     TypeOrmModule.forFeature([RefreshTokenEntity]),
