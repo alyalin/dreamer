@@ -7,6 +7,7 @@ import { addHours, addMinutes, isAfter } from 'date-fns'
 import { UserEntity } from '../../../user/entities/user.entity'
 import { LINK_TYPE } from '../../enums/links-type.enum'
 import { LinksEntity } from '../../entities/links.entity'
+import { Errors } from '../../../../constants';
 
 @Injectable()
 export class LinksService {
@@ -41,7 +42,7 @@ export class LinksService {
           if (isAfter(new Date(), isResetPasswordExist.deleteDate)) {
             await this.linksRepository.remove(isResetPasswordExist)
           } else {
-            throw new HttpException('Ссылка на восстановление пароля уже была сгенерирована, попробуйте позже', 400)
+            throw new HttpException(Errors.RESET_PASSWORD_ERROR, 400)
           }
         }
       }
@@ -56,9 +57,8 @@ export class LinksService {
           if (isAfter(new Date(), isConfirmEmailExist.deleteDate)) {
             await this.linksRepository.remove(isConfirmEmailExist)
           } else {
-            throw new HttpException('Ссылка на подтверждение почты уже была сгенерирована, попробуйте позже', 400)
+            throw new HttpException(Errors.RESET_EMAIl_ERROR, 400)
           }
-
         }
       }
 

@@ -1,9 +1,4 @@
-export enum APP_ENV {
-  DB_NAME = 'DB_NAME',
-  DB_USER = 'DB_USER',
-  DB_PASSWORD = 'DB_PASSWORD',
-  DB_HOST = 'DB_HOST',
-  DB_PORT = 'DB_PORT',
-  PRODUCTION = 'production',
-  DEVELOPMENT = 'development'
+export enum Errors {
+  RESET_EMAIl_ERROR = 'Ссылка на подтверждение почты уже была сгенерирована, попробуйте позже',
+  RESET_PASSWORD_ERROR = 'Ссылка на восстановление пароля уже была сгенерирована, попробуйте позже'
 }
