@@ -10,15 +10,18 @@ import {
   UnauthorizedException,
   UseGuards,
 } from '@nestjs/common';
-import { AuthService } from './services/auth/auth.service'
-import { SignUpDto } from './dto/sign-up.dto'
-import { Response, Request } from 'express'
-import { ConfigService } from '@nestjs/config'
-import { AuthGuard } from '@nestjs/passport'
-import { RefreshTokenService } from './services/refresh-token/refresh-token.service'
-import { SignInDto } from './dto/sign-in.dto'
-import { SocialTokenDto } from './dto/social.dto'
-import { UserService } from '../user/user.service'
+import { AuthService } from './services/auth/auth.service';
+import { SignUpDto } from './dto/sign-up.dto';
+import { Request, Response } from 'express';
+import { ConfigService } from '@nestjs/config';
+import { AuthGuard } from '@nestjs/passport';
+import { RefreshTokenService } from './services/refresh-token/refresh-token.service';
+import { SignInDto } from './dto/sign-in.dto';
+import { SocialTokenDto } from './dto/social.dto';
+import { UserService } from '../user/user.service';
+import { User } from '../../common/decorators/user.decorator';
+import { LinksService } from '../links/services/links/links.service';
+import { LINK_TYPE } from '../links/enums/links-type.enum';
 
 @Controller('auth')
 export class AuthController {
@@ -27,6 +30,7 @@ export class AuthController {
     private userService: UserService,
     private configService: ConfigService,
     private refreshTokenService: RefreshTokenService,
+    private linksService: LinksService
   ) {
   }
 
@@ -152,5 +156,11 @@ export class AuthController {
     } catch (e) {
       throw new HttpException(e.response.statusText, e.response.status)
     }
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Post('/hash')
+  async hash(@User('userId') userId: string) {
+    await this.linksService.create(userId, LINK_TYPE.RESET_PW);
   }
 }
