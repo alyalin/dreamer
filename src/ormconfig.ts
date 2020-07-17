@@ -1,7 +1,7 @@
 import { ConnectionOptions } from 'typeorm';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 import { config } from 'dotenv';
-import { APP_ENV } from './constants';
+import { APP_ENV } from './common/interfaces/app-env.interface';
 
 config();
 
