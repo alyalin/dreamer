@@ -170,10 +170,4 @@ export class AuthController {
   async resetPasswordByEmail(@Body() data: ResetPasswordByEmailDto) {
     return await this.userService.resetPasswordByEmail(data.hash, data.password);
   }
-
-  @UseGuards(AuthGuard('jwt'))
-  @Post('/hash')
-  async hash(@User('userId') userId: string) {
-    await this.linksService.create(userId, LINK_TYPE.RESET_PW);
-  }
 }
