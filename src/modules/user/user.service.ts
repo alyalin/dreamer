@@ -1,4 +1,4 @@
-import { HttpService, Injectable } from '@nestjs/common'
+import { BadRequestException, HttpService, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
 import * as argon2 from 'argon2'
@@ -53,6 +53,29 @@ export class UserService {
       return newUser.toResponseObject()
     } catch (e) {
       throw e
+    }
+  }
+
+  async resetPassword(userId: string, password: string) {
+    try {
+      const user = await this.findById(userId);
+      if (!user) {
+        throw new BadRequestException();
+      }
+      const newPasswordHash = await argon2.hash(password);
+      user.password = newPasswordHash;
+      await this.userRepository.save(user);
+      return { success: true };
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  async resetPasswordByEmail(emailHash: string, password: string) {
+    try {
+
+    } catch (e) {
+
     }
   }
 

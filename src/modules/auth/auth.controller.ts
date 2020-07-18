@@ -22,6 +22,8 @@ import { UserService } from '../user/user.service';
 import { User } from '../../common/decorators/user.decorator';
 import { LinksService } from '../links/services/links/links.service';
 import { LINK_TYPE } from '../links/enums/links-type.enum';
+import { ResetPasswordDto } from './dto/reset-password.dto';
+import { ResetPasswordByEmailDto } from './dto/reset-password-by-email.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -156,6 +158,17 @@ export class AuthController {
     } catch (e) {
       throw new HttpException(e.response.statusText, e.response.status)
     }
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Post('/reset-password')
+  async resetPassword(@User('userId') userId: string, @Body() data: ResetPasswordDto) {
+    return await this.userService.resetPassword(userId, data.password);
+  }
+
+  @Post('/reset-password-email')
+  async resetPasswordByEmail(@Body() data: ResetPasswordByEmailDto) {
+    return await this.userService.resetPasswordByEmail(data.hash, data.password);
   }
 
   @UseGuards(AuthGuard('jwt'))
