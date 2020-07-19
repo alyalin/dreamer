@@ -82,6 +82,8 @@ export class LinksService {
         type,
       })
       await this.linksRepository.save(link)
+
+      return link.hash;
     } catch (e) {
       throw e
     }
