@@ -16,12 +16,10 @@ export class AwsSESService {
   async sendWelcomeEmail(userName: string, email: string, actionUrl: string) {
     const params: SES.Types.SendTemplatedEmailRequest = {
       Destination: {
-        ToAddresses: [
-          email,
-        ],
+        ToAddresses: [email],
       },
       ConfigurationSetName: 'TestConfig',
-      Source: 'no-reply@justadreamer.ru',
+      Source: 'Dreamer <no-reply@justadreamer.ru>',
       Template: 'WelcomeTemplate6',
       TemplateData: JSON.stringify({
         name: userName,
@@ -29,7 +27,63 @@ export class AwsSESService {
         login_url: 'https://justadreamer.ru/account/sign-in/',
         username: email,
         support_email: 'support@justadreamer.ru',
-        help_url: 'https://justadreamer.ru/helpdesk/'
+        help_url: 'https://justadreamer.ru/helpdesk/',
+      }),
+    };
+    return await new SES(this.SESConfig).sendTemplatedEmail(params).promise();
+  }
+
+  async sendResetPasswordEmail(
+    userName: string,
+    email: string,
+    actionUrl: string,
+    operatingSystem: string,
+    browserName: string,
+  ) {
+    console.log(email);
+    const params: SES.Types.SendTemplatedEmailRequest = {
+      Destination: {
+        ToAddresses: [email],
+      },
+      ConfigurationSetName: 'TestConfig',
+      Source: 'Dreamer <no-reply@justadreamer.ru>',
+      Template: 'ResetPassword2',
+      TemplateData: JSON.stringify({
+        name: userName,
+        action_url: actionUrl,
+        username: email,
+        support_url: 'support@justadreamer.ru',
+        operating_system: operatingSystem,
+        browser_name: browserName,
+      }),
+    };
+
+    return await new SES(this.SESConfig).sendTemplatedEmail(params).promise();
+  }
+
+  async sendConfirmEmail(
+    userName: string,
+    email: string,
+    actionUrl: string,
+    operatingSystem: string,
+    browserName: string,
+  ) {
+    const params: SES.Types.SendTemplatedEmailRequest = {
+      Destination: {
+        ToAddresses: [email],
+      },
+      ConfigurationSetName: 'TestConfig',
+      Source: 'Dreamer <no-reply@justadreamer.ru>',
+      Template: 'ConfirmEmail',
+      TemplateData: JSON.stringify({
+        name: userName,
+        action_url: actionUrl,
+        login_url: 'https://justadreamer.ru/account/sign-in/',
+        username: email,
+        support_url: 'support@justadreamer.ru',
+        help_url: 'https://justadreamer.ru/helpdesk/',
+        operating_system: operatingSystem,
+        browser_name: browserName,
       }),
     };
     return await new SES(this.SESConfig).sendTemplatedEmail(params).promise();
