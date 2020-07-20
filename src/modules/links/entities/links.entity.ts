@@ -23,7 +23,7 @@ export class LinksEntity {
   })
   type: LINK_TYPE
 
-  @ManyToOne(type => UserEntity, user => user.links)
+  @ManyToOne(type => UserEntity, user => user.links, { cascade: true })
   user: UserEntity
 
   toResponseObject() {
