@@ -32,7 +32,7 @@ export class AuthService {
       const confirmEmailLinkHash = await this.linksService.create(newUser.id, LINK_TYPE.EMAIL);
       const confirmEmailLink = `${this.configService.get('CONFIRM_EMAIL_LINK')}${confirmEmailLinkHash.hash}`;
 
-      await this.awsSESService.sendWelcomeEmail('Дример', data.email, confirmEmailLink)
+      await this.awsSESService.sendWelcomeEmail(data.email, confirmEmailLink)
       return newUser;
     } catch (e) {
       throw e;

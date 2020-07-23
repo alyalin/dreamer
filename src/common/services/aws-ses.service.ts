@@ -13,7 +13,7 @@ export class AwsSESService {
 
   constructor(private configService: ConfigService) {}
 
-  async sendWelcomeEmail(userName: string, email: string, actionUrl: string) {
+  async sendWelcomeEmail(email: string, actionUrl: string) {
     const params: SES.Types.SendTemplatedEmailRequest = {
       Destination: {
         ToAddresses: [email],
@@ -22,7 +22,6 @@ export class AwsSESService {
       Source: 'Dreamer <no-reply@justadreamer.ru>',
       Template: 'WelcomeTemplate6',
       TemplateData: JSON.stringify({
-        name: userName,
         action_url: actionUrl,
         login_url: 'https://justadreamer.ru/account/sign-in/',
         username: email,
@@ -34,7 +33,6 @@ export class AwsSESService {
   }
 
   async sendResetPasswordEmail(
-    userName: string,
     email: string,
     actionUrl: string,
     operatingSystem: string,
@@ -49,7 +47,6 @@ export class AwsSESService {
       Source: 'Dreamer <no-reply@justadreamer.ru>',
       Template: 'ResetPassword2',
       TemplateData: JSON.stringify({
-        name: userName,
         action_url: actionUrl,
         username: email,
         support_url: 'support@justadreamer.ru',
@@ -62,7 +59,6 @@ export class AwsSESService {
   }
 
   async sendConfirmEmail(
-    userName: string,
     email: string,
     actionUrl: string,
     operatingSystem: string,
@@ -76,7 +72,6 @@ export class AwsSESService {
       Source: 'Dreamer <no-reply@justadreamer.ru>',
       Template: 'ConfirmEmail',
       TemplateData: JSON.stringify({
-        name: userName,
         action_url: actionUrl,
         login_url: 'https://justadreamer.ru/account/sign-in/',
         username: email,
