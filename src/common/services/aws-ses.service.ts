@@ -20,7 +20,7 @@ export class AwsSESService {
       },
       ConfigurationSetName: 'TestConfig',
       Source: 'Dreamer <no-reply@justadreamer.ru>',
-      Template: 'WelcomeTemplate6',
+      Template: 'WelcomeTemplate',
       TemplateData: JSON.stringify({
         action_url: actionUrl,
         login_url: 'https://justadreamer.ru/account/sign-in/',
@@ -45,7 +45,7 @@ export class AwsSESService {
       },
       ConfigurationSetName: 'TestConfig',
       Source: 'Dreamer <no-reply@justadreamer.ru>',
-      Template: 'ResetPassword2',
+      Template: 'ResetPassword',
       TemplateData: JSON.stringify({
         action_url: actionUrl,
         username: email,
