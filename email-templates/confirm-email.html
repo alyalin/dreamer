@@ -1,22 +1,16 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html>
+<html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="x-apple-disable-message-reformatting" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="color-scheme" content="light dark" />
     <meta name="supported-color-schemes" content="light dark" />
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <title></title>
     <style type="text/css" rel="stylesheet" media="all">
       /* Base ------------------------------ */
 
       @import url('https://fonts.googleapis.com/css?family=Nunito+Sans:400,700&display=swap');
-
-      :root {
-        color-scheme: light dark;
-        supported-color-schemes: light dark;
-      }
-
       body {
         width: 100% !important;
         height: 100%;
@@ -47,7 +41,6 @@
         opacity: 0;
         overflow: hidden;
       }
-
       /* Type ------------------------------ */
 
       body,
@@ -97,7 +90,6 @@
       p.sub {
         font-size: 13px;
       }
-
       /* Utilities ------------------------------ */
 
       .align-right {
@@ -111,7 +103,6 @@
       .align-center {
         text-align: center;
       }
-
       /* Buttons ------------------------------ */
 
       .button {
@@ -151,7 +142,6 @@
           text-align: center !important;
         }
       }
-
       /* Attribute list ------------------------------ */
 
       .attributes {
@@ -166,7 +156,6 @@
       .attributes_item {
         padding: 0;
       }
-
       /* Related Items ------------------------------ */
 
       .related {
@@ -200,7 +189,6 @@
         text-align: center;
         padding: 25px 0 10px;
       }
-
       /* Discount Code ------------------------------ */
 
       .discount {
@@ -222,7 +210,6 @@
         text-align: center;
         font-size: 15px;
       }
-
       /* Social Icons ------------------------------ */
 
       .social {
@@ -239,7 +226,6 @@
         margin: 0 8px 10px 8px;
         padding: 0;
       }
-
       /* Data table ------------------------------ */
 
       .purchase {
@@ -325,7 +311,6 @@
         -premailer-cellpadding: 0;
         -premailer-cellspacing: 0;
       }
-
       /* Masthead ----------------------- */
 
       .email-masthead {
@@ -344,7 +329,6 @@
         text-decoration: none;
         text-shadow: 0 1px 0 white;
       }
-
       /* Body ------------------------------ */
 
       .email-body {
@@ -400,7 +384,6 @@
       .content-cell {
         padding: 35px;
       }
-
       /*Media Queries ------------------------------ */
 
       @media only screen and (max-width: 600px) {
@@ -421,7 +404,6 @@
           background-color: #333333 !important;
           color: #fff !important;
         }
-
         p,
         ul,
         ol,
@@ -431,15 +413,18 @@
         h3 {
           color: #fff !important;
         }
-
         .attributes_content,
         .discount {
           background-color: #222 !important;
         }
-
         .email-masthead_name {
           text-shadow: none !important;
         }
+      }
+
+      :root {
+        color-scheme: light dark;
+        supported-color-schemes: light dark;
       }
     </style>
     <!--[if mso]>
@@ -450,11 +435,10 @@
       </style>
     <![endif]-->
   </head>
-
   <body>
     <span class="preheader"
-      >Спасибо, что попробовали Dreamer. Мы собрали вместе некоторую информацию
-      и ресурсы, чтобы помочь вам начать работу.</span
+      >Используйте эту ссылку чтобы подтвердить вашу почту. Ссылка действительна в
+      течение одного часа.</span
     >
     <table
       class="email-wrapper"
@@ -504,9 +488,13 @@
                       <div class="f-fallback">
                         <h1>Здравствуйте!</h1>
                         <p>
-                          Спасибо, что попробовали Dreamer. Мы очень рады видеть
-                          вас на борту. Чтобы получить максимальную отдачу от
-                          Dreamer, подтвердите свою регистрацию:
+                          Недавно вы запросили подтверждение почты для своей учетной
+                          записи Dreamer. Используйте кнопку ниже, чтобы
+                          подтвердить вашу почту.
+                          <strong
+                            >Подтверждение почты действительно только в течение одного
+                            часа.</strong
+                          >
                         </p>
                         <!-- Action -->
                         <table
@@ -519,6 +507,8 @@
                         >
                           <tr>
                             <td align="center">
+                              <!-- Border based button
+                                                       https://litmus.com/blog/a-guide-to-bulletproof-buttons-in-email-design -->
                               <table
                                 width="100%"
                                 border="0"
@@ -530,7 +520,7 @@
                                   <td align="center">
                                     <a
                                       href="{{action_url}}"
-                                      class="f-fallback button"
+                                      class="f-fallback button button--green"
                                       target="_blank"
                                       >Подтвердить</a
                                     >
@@ -541,55 +531,15 @@
                           </tr>
                         </table>
 
-                        <p>Для справки, вот ваша регистрационная информация:</p>
-                        <table
-                          class="attributes"
-                          width="100%"
-                          cellpadding="0"
-                          cellspacing="0"
-                          role="presentation"
-                        >
-                          <tr>
-                            <td class="attributes_content">
-                              <table
-                                width="100%"
-                                cellpadding="0"
-                                cellspacing="0"
-                                role="presentation"
-                              >
-                                <tr>
-                                  <td class="attributes_item">
-                                    <span class="f-fallback">
-                                      <strong>Страница входа:</strong
-                                      >&nbsp;{{login_url}}
-                                    </span>
-                                  </td>
-                                </tr>
-                                <tr>
-                                  <td class="attributes_item">
-                                    <span class="f-fallback">
-                                      <strong>Имя пользователя:</strong
-                                      >&nbsp;{{username}}
-                                    </span>
-                                  </td>
-                                </tr>
-                              </table>
-                            </td>
-                          </tr>
-                        </table>
-
                         <p>
-                          Если у вас есть какие-либо вопросы, не стесняйтесь
-                          <a href="mailto:{{support_email}}"
-                            >обращаться по электронной почте к нашей команде</a
-                          >. (Мы молниеносно реагируем.)
+                          Для обеспечения безопасности этот запрос был получен
+                          от устройства {{operating_system}} с использованием
+                          {{browser_name}}. Если вы не запрашивали подтверждение почты,
+                          пожалуйста, проигнорируйте это письмо или
+                          <a href="{{support_url}}">обратитесь в поддержку</a>
+                          если у вас остались вопросы.
                         </p>
                         <p>Спасибо, <br />Иван Суарес и команда Dreamer</p>
-                        <p>
-                          <strong>P.S.</strong> Нужна немедленная помощь, чтобы
-                          начать работу? Проверьте нашу
-                          <a href="{{help_url}}">справочную документацую</a>.
-                        </p>
                         <!-- Sub copy -->
                         <table class="body-sub" role="presentation">
                           <tr>

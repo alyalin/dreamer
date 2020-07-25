@@ -1,14 +1,21 @@
-import { Column, Entity, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm'
-import { SessionPayload } from '../../auth/interfaces/session-payload.interface'
-import { USER_ROLES } from '../enums/roles.enum'
+import {
+  Column,
+  Entity,
+  PrimaryGeneratedColumn,
+  CreateDateColumn,
+  UpdateDateColumn,
+  OneToMany,
+} from 'typeorm';
+import { USER_ROLES } from '../enums/roles.enum';
+import { LinksEntity } from '../../links/entities/links.entity';
 
 @Entity()
 export class UserEntity {
   @PrimaryGeneratedColumn('uuid')
-  id: string
+  id: string;
 
   @CreateDateColumn()
-  created: Date
+  created: Date;
 
   @UpdateDateColumn()
   updated: Date;
@@ -18,64 +25,92 @@ export class UserEntity {
     unique: true,
     nullable: true,
   })
-  email: string
+  email: string;
 
   @Column({
     type: 'text',
     nullable: true,
   })
-  firstName: string
+  firstName: string;
 
   @Column({
     type: 'text',
     nullable: true,
   })
-  lastName: string
+  lastName: string;
 
   @Column({
     type: 'text',
     nullable: true,
   })
-  password: string
+  password: string;
 
   @Column({
     type: 'text',
     nullable: true,
   })
-  facebook_id: string
+  facebook_id: string;
 
   @Column({
     type: 'text',
-    nullable: true
+    nullable: true,
   })
   instagram_id: string;
 
   @Column({
     type: 'text',
-    nullable: true
+    nullable: true,
   })
   vk_id: string;
 
   @Column({
     type: 'boolean',
-    default: false
+    default: false,
   })
   checkbox: boolean;
 
   @Column({
     type: 'boolean',
-    default: false
+    default: false,
   })
   verified: boolean;
 
   @Column({
     type: 'text',
-    default: USER_ROLES.DEFAULT
+    default: USER_ROLES.DEFAULT,
   })
   role: string;
 
+  @OneToMany(
+    type => LinksEntity,
+    links => links.user,
+  )
+  links: LinksEntity[];
+
   toResponseObject() {
-    const { id, role, created, firstName, lastName, email, facebook_id, instagram_id, vk_id, verified } = this
-    return { id, role, created, firstName, lastName, email, facebook_id, instagram_id, vk_id, verified }
+    const {
+      id,
+      role,
+      created,
+      firstName,
+      lastName,
+      email,
+      facebook_id,
+      instagram_id,
+      vk_id,
+      verified,
+    } = this;
+    return {
+      id,
+      role,
+      created,
+      firstName,
+      lastName,
+      email,
+      facebook_id,
+      instagram_id,
+      vk_id,
+      verified,
+    };
   }
 }

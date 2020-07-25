@@ -1,15 +1,14 @@
-import {
-  HttpException,
-  Injectable,
-  UnauthorizedException,
-} from '@nestjs/common';
+import { HttpException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { UserService } from '../../../user/user.service';
-import { SignUpDto } from '../../dto/sign-up.dto'
+import { SignUpDto } from '../../dto/sign-up.dto';
 import { JwtService } from '@nestjs/jwt';
 import { RefreshTokenService } from '../refresh-token/refresh-token.service';
 import { nanoid } from 'nanoid';
 import { ConfigService } from '@nestjs/config';
-import { SignInDto } from '../../dto/sign-in.dto'
+import { SignInDto } from '../../dto/sign-in.dto';
+import { AwsSESService } from '../../../../common/services/aws-ses.service';
+import { LinksService } from '../../../links/services/links/links.service';
+import { LINK_TYPE } from '../../../links/enums/links-type.enum';
 
 @Injectable()
 export class AuthService {
@@ -18,6 +17,8 @@ export class AuthService {
     private refreshTokenService: RefreshTokenService,
     private jwtService: JwtService,
     private configService: ConfigService,
+    private awsSESService: AwsSESService,
+    private linksService: LinksService
   ) {}
 
   async register(data: SignUpDto) {
@@ -26,7 +27,13 @@ export class AuthService {
       if (user) {
         throw new HttpException('This user already exist', 409);
       }
-      return this.userService.createUser(data);
+
+      const newUser = await this.userService.createUser(data);
+      const confirmEmailLinkHash = await this.linksService.create(newUser.id, LINK_TYPE.EMAIL);
+      const confirmEmailLink = `${this.configService.get('CONFIRM_EMAIL_LINK')}${confirmEmailLinkHash.hash}`;
+
+      await this.awsSESService.sendWelcomeEmail(data.email, confirmEmailLink)
+      return newUser;
     } catch (e) {
       throw e;
     }

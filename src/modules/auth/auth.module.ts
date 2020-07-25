@@ -10,9 +10,12 @@ import { ConfigModule, ConfigService } from '@nestjs/config'
 import { RefreshTokenService } from './services/refresh-token/refresh-token.service'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { RefreshTokenEntity } from './entities/refresh-token.entity'
+import { LinksModule } from '../links/links.module'
+import { AwsSESService } from '../../common/services/aws-ses.service';
 
 @Module({
   imports: [
+    LinksModule,
     UserModule,
     HttpModule,
     TypeOrmModule.forFeature([RefreshTokenEntity]),
@@ -33,6 +36,6 @@ import { RefreshTokenEntity } from './entities/refresh-token.entity'
     }),
   ],
   controllers: [AuthController],
-  providers: [AuthService, JwtStrategy, RefreshTokenService],
+  providers: [AuthService, JwtStrategy, RefreshTokenService, AwsSESService],
 })
 export class AuthModule {}
