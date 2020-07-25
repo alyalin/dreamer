@@ -26,6 +26,7 @@ import { ConfirmEmailDto } from './dto/confirm-email.dto';
 import { AwsSESService } from '../../common/services/aws-ses.service';
 import { LINK_TYPE } from '../links/enums/links-type.enum';
 import { ResetPasswordDto } from './dto/reset-password.dto';
+import { ConfirmEmailGenerateDto } from './dto/confirm-email-generate.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -168,12 +169,11 @@ export class AuthController {
    */
   @UseGuards(AuthGuard('jwt'))
   @Post('/generate-email-confirmation')
-  async generateEmailConfirmation(@User('userId') userId: string) {
+  async generateEmailConfirmation(@User('userId') userId: string, @Body() { osName, browserName }: ConfirmEmailGenerateDto) {
     const link = await this.linksService.create(userId, LINK_TYPE.EMAIL);
     await this.awsSESService.sendConfirmEmail(
-      link.user.firstName ? link.user.firstName : '%username%',
       link.user.email,
-      `${this.configService.get('CONFIRM_EMAIL_LINK')}${link.hash}`, 'Windows 10', 'Chrome'
+      `${this.configService.get('CONFIRM_EMAIL_LINK')}?code=${link.hash}`, osName, browserName
     );
 
     return {
@@ -192,16 +192,19 @@ export class AuthController {
   }
 
   @Post('/generate-email-reset-password')
-  async generateEmailResetPassword(@Body() { email }: ResetPasswordDto) {
-    const link = await this.linksService.create(null, LINK_TYPE.RESET_PW, email);
-    await this.awsSESService.sendResetPasswordEmail(
-      link.user.firstName ? link.user.firstName : '%username%',
-      link.user.email,
-      `${this.configService.get('RESET_PASSWORD_LINK')}${link.hash}`, 'Windows 10', 'Chrome'
-    );
+  async generateEmailResetPassword(@Body() { email, osName, browserName }: ResetPasswordDto) {
+    try {
+      const link = await this.linksService.create(null, LINK_TYPE.RESET_PW, email);
+      await this.awsSESService.sendResetPasswordEmail(
+        link.user.email,
+        `${this.configService.get('RESET_PASSWORD_LINK')}?code=${link.hash}`, osName, browserName
+      );
 
-    return {
-      success: true
+      return {
+        success: true
+      }
+    } catch (e) {
+      throw e;
     }
   }
 
@@ -209,7 +212,7 @@ export class AuthController {
    * Обрабатываем хэш-ссылку для изменения пароля
    * @param data
    */
-  @Post('/reset-password-email')
+  @Post('/reset-password')
   async resetPasswordByEmail(@Body() data: ResetPasswordByEmailDto) {
     await this.linksService.updatePassword(
       data.hash,
