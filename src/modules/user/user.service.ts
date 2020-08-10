@@ -96,7 +96,7 @@ export class UserService {
       // запрашиваем access_token
       const { data } = await this.httpService
         .get(
-          `https://oauth.vk.com/access_token?client_id=7527042&client_secret=wE72lZwl38cqUYphmT5N&redirect_uri=${this.configService.get(
+          `https://oauth.vk.com/access_token?client_id=7480531&client_secret=TE6I2z47SEE14H8DCHsp&redirect_uri=${this.configService.get(
             'VK_REDIRECT',
           )}&code=${token}`,
         )
