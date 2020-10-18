@@ -19,9 +19,8 @@ module.exports = {
       repo: 'git@github.com:alyalin/dreamer.git',
       path: '/var/app/repositories/',
       'pre-deploy-local': '',
-      'pre-deploy': "export NODE_OPTIONS='--max-old-space-size=4096'",
       'post-deploy':
-        "npm install && npm run build && pm2 reload ecosystem.config.js",
+        "export NODE_OPTIONS='--max-old-space-size=4096' && npm install && npm run build && pm2 reload ecosystem.config.js",
       'pre-setup': '',
     },
   },
