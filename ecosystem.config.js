@@ -13,7 +13,7 @@ module.exports = {
   deploy: {
     production: {
       user: 'ubuntu',
-      host: 'ec2-13-49-113-158.eu-north-1.compute.amazonaws.com',
+      host: 'ec2-18-159-187-215.eu-central-1.compute.amazonaws.com',
       ref: 'origin/master',
       key: '~/.ssh/aws-ec2',
       repo: 'git@github.com:alyalin/dreamer.git',
