@@ -6,8 +6,7 @@
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
-    "prebuild": "rimraf dist",
-    "build": "nest build",
+    "build": "rimraf dist && nest build",
     "start": "npm run copy-env-development nest start",
     "start:dev": "npm run copy-env-development && cross-env NODE_ENV=development nest start --watch",
     "start:debug": "npm run copy-env-development && cross-env NODE_ENV=test nest start --debug --watch",
